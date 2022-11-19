@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package keyauth.user;
+option  go_package = "github.com/lifangjunone/keyauth/apps/user";
+
+import "github.com/infraboard/mcube/pb/page/page.proto";
+import "github.com/infraboard/mcube/pb/request/request.proto";
+
+service Service {
+  rpc CreateUser(CreateUserRequest) returns (User);
+  rpc QueryUser(QueryUserRequest) returns (UserSet);
+  rpc DescribeUser(DescribeUserRequest) returns (User);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+  rpc DeleteUser(DeleteUserRequest) returns (User);
+}
+
+message User {
+  // @gotags: json:"id" bson:"_id"
+  string id = 1;
+  // @gotags: json:"create_at" bson:"create_at"
+  int64 create_at = 2;
+  // @gotags: json:"update_at" bson:"update_at"
+  int64 update_at = 3;
+  // @gotags: json:"update_by" bson:"update_at"
+  string update_by = 4;
+  // @gotags: json:"data" bson:"data"
+  CreateUserRequest data = 5;
+}
+
+message CreateUserRequest {
+  // @gotags: json:"create_by" bson:"create_by"
+  string create_by = 1;
+  // @gotags: json:"name" bson:"name" validate:"required"
+  string name = 2;
+  // @gotags: json:"password" bson:"password" validate:"required"
+  string password = 3;
+  // @gotags: json:"domain" bson:"domain" validate:"required"
+  string domain = 4;
+}
+
+message QueryUserRequest {
+  // @gotags: json:"page"
+  infraboard.mcube.page.PageRequest page = 1;
+  // @gotags: json:"keywords"
+  string keywords = 2;
+}
+
+message UserSet {
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items"
+  repeated User items = 2;
+}
+
+message DescribeUserRequest {
+  // @gotags: json:"id"
+  string id = 1;
+}
+
+message UpdateUserRequest {
+  // @gotags: json:"id"
+  string id = 1;
+  // @gotags: json:"update_mode"
+  infraboard.mcube.request.UpdateMode update_mode = 2;
+  // @gotags: json:"update_by"
+  string update_by = 3;
+  // @gotags: json:"update_at"
+  int64 update_at = 4;
+  // @gotags: json:"data"
+  CreateUserRequest data = 5;
+}
+
+message DeleteUserRequest {
+  // gotags: json:"id"
+  string id = 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

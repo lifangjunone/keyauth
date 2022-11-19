@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package keyauth.token;
+option go_package = "github.com/lifangjunone/keyauth/apps/token";
+
+import "github.com/infraboard/mcube/pb/page/page.proto";
+import "github.com/infraboard/mcube/pb/request/request.proto";
+
+service Service {
+  rpc IssueToken(IssueTokenRequest) returns(Token);
+  rpc QueryToken(QueryTokenRequest) returns(TokenSet);
+  rpc DescribeToken(DescribeTokenRequest) returns(Token);
+  rpc UpdateToken(UpdateTokenRequest) returns(Token);
+  rpc DeleteToken(DeleteTokenRequest) returns(Token);
+}
+
+// Token todo
+message Token {
+  // 唯一ID
+  // @gotags: json:"access_token" bson:"_id"
+  string access_token = 1;
+  // 录入时间
+  // @gotags: json:"issue_at" bson:"issue_at"
+  int64 issue_at = 2;
+  // 更新时间
+  // @gotags: json:"update_at" bson:"update_at"
+  int64 update_at = 3;
+  // 更新人
+  // @gotags: json:"update_by" bson:"update_by"
+  string update_by = 4;
+  // 书本信息
+  // @gotags: json:"data" bson:"data"
+  IssueTokenRequest data = 5;
+  // @gotags: json:"access_token_expired_at" bson:"access_token_expired_at"
+  int64 access_token_expired_at = 6;
+  // @gotags: json:"refresh_token" bson:"refresh_token"
+  string refresh_token = 7;
+  // @gotags: json:"refresh_token_expired_at" bson:"refresh_token_expired_at"
+  int64 refresh_token_expired_at = 8;
+}
+
+enum GranteType {
+  PASSWORD = 0;
+  LADP = 1;
+  ACCESS_TOKEN = 2;
+  REFRESH_TOKEN = 3;
+}
+
+message IssueTokenRequest {
+  // 创建人
+  // @gotags: json:"grante_type" bson:"grante_type"
+  GranteType grante_type = 1;
+  // 用户名
+  // @gotags: json:"user_name" bson:"user_name"
+  string user_name = 2;
+  // 密码
+  // @gotags: json:"password" bson:"-"
+  string password = 3;
+}
+
+message QueryTokenRequest {
+  // 分页参数
+  // @gotags: json:"page" 
+  infraboard.mcube.page.PageRequest page = 1;
+  // 关键字参数
+  // @gotags: json:"keywords"
+  string keywords = 2;
+}
+
+// TokenSet todo
+message TokenSet {
+  // 分页时，返回总数量
+  // @gotags: json:"total"
+  int64 total = 1;
+  // 一页的数据
+  // @gotags: json:"items"
+  repeated Token items = 2;
+}
+
+message DescribeTokenRequest {
+  // Token id
+  // @gotags: json:"id"
+  string id = 1;
+}
+
+message UpdateTokenRequest {
+  // Token id
+  // @gotags: json:"id"
+  string id = 1;
+  // 更新模式
+  // @gotags: json:"update_mode"
+  infraboard.mcube.request.UpdateMode update_mode = 2;
+  // 更新人
+  // @gotags: json:"update_by"
+  string update_by = 3;
+  // 更新时间
+  // @gotags: json:"update_at"
+  int64 update_at = 4;
+  // 更新的书本信息
+  // @gotags: json:"data"
+  IssueTokenRequest data = 5;
+}
+
+message DeleteTokenRequest {
+  // Token id
+  // @gotags: json:"id"
+  string id = 1;
+}
